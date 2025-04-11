@@ -17,3 +17,19 @@ A multimodal AI assistant that helps users **search and book flights**, and **re
 ![image](https://github.com/user-attachments/assets/869d0a8c-36f3-4fbe-bd21-d4971443e8b3)
 
 
+## 🛠️ Technologies Used
+
+- **LangGraph** – Multi-agent coordination
+- **LangChain** – Agent logic & tool calling
+- **MongoDB & SQL** – Booking & user data
+- **Python** – Core logic
+- **OpenAI / Whisper / Image Models** – For multimodal input (if used)
+
+## 🚀 Getting Started
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/NgNMinh/Multimodal-Multi-Agent-Travel-Support-Bot.git
+   cd Multimodal-Multi-Agent-Travel-Support-Bot
+
+
