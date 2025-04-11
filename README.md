@@ -45,7 +45,3 @@ A multimodal AI assistant that helps users **search and book flights**, and **re
 4. **Run the app**
    ```bash
    python app.py
-
-
-
-
