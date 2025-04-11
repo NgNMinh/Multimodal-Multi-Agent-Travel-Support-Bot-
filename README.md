@@ -29,7 +29,10 @@ A multimodal AI assistant that helps users **search and book flights**, and **re
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/NgNMinh/Multimodal-Multi-Agent-Travel-Support-Bot.git
-   cd Multimodal-Multi-Agent-Travel-Support-Bot
+   git clone https://github.com/NgNMinh/Multimodal-Multi-Agent-Travel-Support-Bot-.git
+   cd Multimodal-Multi-Agent-Travel-Support-Bot-
+
+2. **Install dependencies**
+   pip install -r requirements.txt
 
 
