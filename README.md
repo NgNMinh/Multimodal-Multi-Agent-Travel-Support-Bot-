@@ -33,6 +33,19 @@ A multimodal AI assistant that helps users **search and book flights**, and **re
    cd Multimodal-Multi-Agent-Travel-Support-Bot-
 
 2. **Install dependencies**
+   ```bash
    pip install -r requirements.txt
+
+3. **Configure environment variables**
+   ```bash
+   GEMINI_API_KEY=your_key
+   GROQ_API_KEY=your_key
+   TOGETHER_API_KEY=your_key
+
+4. **Run the app**
+   ```bash
+   python app.py
+
+
 
 
