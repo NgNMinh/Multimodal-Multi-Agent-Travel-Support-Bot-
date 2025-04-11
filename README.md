@@ -1,1 +1,19 @@
-# Multimodal-Multi-Agent-Travel-Support-Bot-
+# ✈️ Multimodal Multi-Agent Travel Support Bot
+
+A multimodal AI assistant that helps users **search and book flights**, and **reserve airport shuttle services**, powered by a multi-agent architecture built with [LangGraph](https://github.com/langchain-ai/langgraph).
+
+## 💡 Key Features
+
+- 🤖 **Multi-Agent System**: Uses a Supervisor Agent to coordinate:
+  - **Flight Agent** – Searches and books flight tickets.
+  - **Shuttle Agent** – Finds and reserves airport shuttle services.
+- 🧠 **Multimodal Input**: Supports user input via **text**, **image**, or **audio**.
+- 📦 **Real-Time Database Integration**:
+  - Fetches available flights and shuttles based on user query.
+  - Deducts user balance and stores booking data in **MongoDB** and **SQL**.
+- 🔁 **Transactional Booking Flow**: Ensures atomicity between booking and payment.
+
+## 📌 Architecture
+![image](https://github.com/user-attachments/assets/869d0a8c-36f3-4fbe-bd21-d4971443e8b3)
+
+
