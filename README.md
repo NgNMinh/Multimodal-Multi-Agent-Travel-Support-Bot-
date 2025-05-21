@@ -24,7 +24,7 @@ A multimodal AI assistant that helps users **search and book flights**, and **re
 - **LangChain** – Agent logic & tool calling
 - **MongoDB & SQL** – Booking & user data
 - **Python** – Core logic
-- **OpenAI / Whisper / Image Models** – For multimodal input (if used)
+- **Gemini / STT / Image Models** – For multimodal input (if used)
 
 ## 🚀 Getting Started
 
