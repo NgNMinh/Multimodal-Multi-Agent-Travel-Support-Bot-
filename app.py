@@ -3,7 +3,7 @@ from langchain_core.tools import tool
 from langgraph.prebuilt import ToolNode
 from langchain.schema.runnable.config import RunnableConfig
 from langchain_core.messages import HumanMessage, ToolMessage
-from nodes import graph
+from src.core.nodes import graph
 import base64
 from groq import Groq
 import os 
