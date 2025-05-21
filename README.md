@@ -14,7 +14,8 @@ A multimodal AI assistant that helps users **search and book flights**, and **re
 - 🔁 **Transactional Booking Flow**: Ensures atomicity between booking and payment.
 
 ## 📌 Architecture
-![image](https://github.com/user-attachments/assets/869d0a8c-36f3-4fbe-bd21-d4971443e8b3)
+![image](https://github.com/user-attachments/assets/c9a57cb8-b155-4c9a-a94f-0b1cb00f6170)
+
 
 
 ## 🛠️ Technologies Used
