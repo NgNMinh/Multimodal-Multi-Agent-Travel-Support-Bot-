@@ -25,4 +25,3 @@ class State(TypedDict):
         ],
         update_dialog_stack,
     ]
-    summary: str
