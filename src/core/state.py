@@ -25,3 +25,4 @@ class State(TypedDict):
         ],
         update_dialog_stack,
     ]
+    recall_memories: str
