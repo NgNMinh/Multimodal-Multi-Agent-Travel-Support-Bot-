@@ -1,17 +1,24 @@
-from langchain_core.tools import tool
-from typing import Optional
-from datetime import date, datetime
-from pymongo import MongoClient
-from langchain_core.runnables import RunnableConfig
-from bson.objectid import ObjectId
-from typing import List, Literal, Optional, Union
-from src.database.db import vector_store
-from langchain_core.documents import Document
+import os
 import uuid
+from datetime import date, datetime
+from typing import List, Optional
 
+from bson.objectid import ObjectId
+from dotenv import load_dotenv
+from langchain_core.documents import Document
+from langchain_core.runnables import RunnableConfig
+from langchain_core.tools import tool
+from pymongo import MongoClient
 
-client = MongoClient("mongodb://localhost:27017")
-db = client["flight_booking"]
+from src.database.db import vector_store
+
+load_dotenv()
+
+MONGODB_URI = os.getenv("MONGODB_URI", "mongodb://localhost:27017")
+DB_NAME = os.getenv("DB_NAME", "flight_booking")
+
+client = MongoClient(MONGODB_URI)
+db = client[DB_NAME]
 
 @tool
 def lookup_available_tours(
@@ -60,12 +67,8 @@ def search_hotels(
     """
     query = {}
     if location:
-        # user_input = departure_airport.lower()  # Chuyển thành chữ thường để tránh lỗi nhập
-        # departure_airport = city_to_airport.get(user_input)
         query["location"] = location
     if name:
-        # user_input = arrival_airport.lower()  # Chuyển thành chữ thường để tránh lỗi nhập
-        # arrival_airport = city_to_airport.get(user_input)
         query["name"] = name
     if price_tier:
         query["price_tier"] = price_tier
@@ -97,7 +100,6 @@ def book_hotel(hotel_id: str, config: RunnableConfig) -> str:
     user_id = configuration.get("user_id", None)
     hotel = db['hotels'].find_one({"_id": ObjectId(hotel_id)})
 
-    # Kiểm tra field 'booked'
     if hotel:
         if hotel.get("booked") == 1:
             return f"This hotel {hotel_id} has already been booked."
@@ -118,20 +120,6 @@ def book_hotel(hotel_id: str, config: RunnableConfig) -> str:
                 return f"Failed to update booking status for hotel with ID {hotel_id}."
     else:
         return f"No hotel found with ID {hotel_id}."
-
-    
-
-    # Kiểm tra kết quả
-    # if result.modified_count:
-    #     db.hotel_bookings.insert_one({
-    #     "user_id": ObjectId(user_id),
-    #     "hotel_id": ObjectId(hotel_id),
-    #     "booking_time": datetime.now(),
-    #     "status": "confirmed"
-    #     })
-    #     return f"Hotel {hotel_id} successfully booked."
-    # else:
-    #     return f"No hotel found with ID {hotel_id}."
     
 @tool
 def search_flights(
@@ -149,20 +137,10 @@ def search_flights(
         departure_day (Optional[date | datetime]): Ngày khởi hành, định dạng YYYY-MM-DD.
             mặc định là năm 2025.
     """
-    # city_to_airport = {
-    #     "hồ chí minh": "SGN",
-    #     "sài gòn": "SGN",
-    #     "hà nội": "HAN",
-    #     "đà nẵng": "DAD"
-    # }
     query = {}
     if departure_airport:
-        # user_input = departure_airport.lower()  # Chuyển thành chữ thường để tránh lỗi nhập
-        # departure_airport = city_to_airport.get(user_input)
         query["departure_airport"] = departure_airport
     if arrival_airport:
-        # user_input = arrival_airport.lower()  # Chuyển thành chữ thường để tránh lỗi nhập
-        # arrival_airport = city_to_airport.get(user_input)
         query["arrival_airport"] = arrival_airport
     if airline:
         query["airline"] = airline

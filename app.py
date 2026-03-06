@@ -1,24 +1,29 @@
-from typing import Literal
-from langchain_core.tools import tool
-from langgraph.prebuilt import ToolNode
+import base64
+import io
+import os
+import wave
+
+import chainlit as cl
+import numpy as np
+from bson.objectid import ObjectId
+from groq import Groq
 from langchain.schema.runnable.config import RunnableConfig
 from langchain_core.messages import HumanMessage, ToolMessage
+
 from src.core.nodes import graph
-import base64
-from groq import Groq
-import os 
-import chainlit as cl
-from io import BytesIO
-import numpy as np 
-import io
-import audioop
-import wave
 
 
 # give me tickets from hanoi to saigon on 30 april 2025
 @cl.on_message
 async def on_message(msg: cl.Message):
-    config = {"configurable": {"user_id": "67dac00bd70c58a5d543e4c2", "thread_id": cl.context.session.id}}
+    # Get or create user_id for this session
+    # Get or create user_id for this session
+    user_id = cl.user_session.get("user_id")
+    if not user_id:
+        user_id = str(ObjectId())
+        cl.user_session.set("user_id", user_id)
+    
+    config = {"configurable": {"user_id": user_id, "thread_id": cl.context.session.id}}
     cb = cl.LangchainCallbackHandler()
     final_answer = cl.Message(content="")
     

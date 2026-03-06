@@ -1,19 +1,42 @@
-from langgraph.graph import END, StateGraph, START
-from langgraph.prebuilt import ToolNode, tools_condition
-from src.core.state import State
-from src.agents.agents import Assistant, assistant_runnable, create_entry_node, book_flight_runnable, CompleteOrEscalate, book_shuttle_runnable, ToBookAirportShuttle, ToFlightBookingAssistant, extractor, ToTourBookingAssistant, book_tour_runnable, book_hotel_runnable, ToHotelBookingAssistant, weather_tool
-from src.tools.tools import search_flights, book_flight, search_shuttles, book_shuttle, get_popular_tourist_destinations, search_recall_memories, save_recall_memory, lookup_available_tours, search_hotels, book_hotel
-from langgraph.checkpoint.memory import MemorySaver
-from langchain_core.messages import ToolMessage, get_buffer_string, HumanMessage, SystemMessage
-from typing import Annotated, Literal, Optional
-from langchain_core.runnables import RunnableConfig
-import tiktoken
-from src.utils.prompt import prompt
-from src.database.db import vector_store
 import uuid
-from langchain_core.documents import Document
+from typing import Literal, Optional
 
-tokenizer = tiktoken.encoding_for_model("gpt-4o")
+from langchain_core.documents import Document
+from langchain_core.messages import HumanMessage, ToolMessage
+from langchain_core.runnables import RunnableConfig
+from langgraph.checkpoint.memory import MemorySaver
+from langgraph.graph import END, START, StateGraph
+from langgraph.prebuilt import ToolNode, tools_condition
+
+from src.agents.agents import (
+    Assistant,
+    CompleteOrEscalate,
+    ToBookAirportShuttle,
+    ToFlightBookingAssistant,
+    ToHotelBookingAssistant,
+    ToTourBookingAssistant,
+    assistant_runnable,
+    book_flight_runnable,
+    book_hotel_runnable,
+    book_shuttle_runnable,
+    book_tour_runnable,
+    create_entry_node,
+    extractor,
+    weather_tool,
+)
+from src.core.state import State
+from src.database.db import vector_store
+from src.tools.tools import (
+    book_flight,
+    book_hotel,
+    book_shuttle,
+    get_popular_tourist_destinations,
+    lookup_available_tours,
+    search_flights,
+    search_hotels,
+    search_recall_memories,
+    search_shuttles,
+)
 
 def load_memories(state: State, config: RunnableConfig) -> State:
     """Load memories for the current conversation.
@@ -25,10 +48,6 @@ def load_memories(state: State, config: RunnableConfig) -> State:
     Returns:
         State: The updated state with loaded memories.
     """
-    # convo_str = get_buffer_string(state["messages"])
-    # convo_str = tokenizer.decode(tokenizer.encode(convo_str)[:2048])
-    # print(convo_str)
-    # print(state["messages"][-1].content)
     recall_memories = search_recall_memories.invoke(state["messages"][-1].content, config)
     return {
         "recall_memories": recall_memories,
@@ -50,7 +69,7 @@ def extract_memories(state: State,  config: RunnableConfig):
     print(state['messages'])
     print(state['messages'][-1])
     print(HumanMessage(state['messages'][-1].content))
-    #print(state['messages'])
+    
     analysis = extractor.invoke(
         {
             "messages": [HumanMessage(state['messages'][-1].content)],
@@ -77,7 +96,6 @@ graph_builder.add_edge('load_memories', 'extract_memories')
 
 
 graph_builder.add_node("primary_assistant", Assistant(assistant_runnable))
-# graph_builder.add_edge("extract_memories", "primary_assistant")
 graph_builder.add_node(
     "enter_book_flight",
     create_entry_node("Flight Searching & Booking Assistant", "book_flight"),
@@ -288,9 +306,3 @@ graph_builder.add_conditional_edges("extract_memories", route_to_workflow)
 
 memory = MemorySaver()
 graph = graph_builder.compile(checkpointer=memory)
-
-# graph_image = graph.get_graph(xray=True).draw_mermaid_png()
-# with open("graph_V2.png", "wb") as f:
-#     f.write(graph_image)  # Chỉ cần ghi trực tiếp bytes vào file
-
-# print("Graph saved as graph.png, open it manually.")
